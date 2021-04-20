@@ -17,7 +17,7 @@ const ListItem = props => {
 
 const MealDetailScreen = props => {
    const availableMeals = useSelector(state => state.meals.meals);
-   const mealId = props.navigation.getParam('mealId');
+   const mealId = props.route.params.mealId;
    const currentMealIsFavorite = useSelector(state =>
       state.meals.favoriteMeals.some(meal => meal.id === mealId)
    );
@@ -31,13 +31,14 @@ const MealDetailScreen = props => {
    }, [dispatch, mealId]);
 
    useEffect(() => {
-      // props.navigation.setParams({ mealTitle: selectedMeal.title });
-      props.navigation.setParams({ toggleFav: toggleFavoriteHandler })
-   }, [toggleFavoriteHandler]);
-
-   useEffect(() => {
-      props.navigation.setParams({ isFav: currentMealIsFavorite })
-   }, [currentMealIsFavorite])
+      props.navigation.setOptions({ 
+         headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+               <Item title='Favorite' iconName={currentMealIsFavorite ? 'ios-star' : 'ios-star-outline'} onPress={toggleFavoriteHandler} />
+            </HeaderButtons>
+         ) 
+      })
+   }, [toggleFavoriteHandler, currentMealIsFavorite]);
 
    return (
       <ScrollView >
@@ -59,19 +60,10 @@ const MealDetailScreen = props => {
    );
 };
 
-MealDetailScreen.navigationOptions = (navigationData) => {
-   // const mealId = navigationData.navigation.getParam('mealId');
-   const mealTitle = navigationData.navigation.getParam('mealTitle')
-   const toggleFavorite = navigationData.navigation.getParam('toggleFav')
-   const isFavorite = navigationData.navigation.getParam('isFav')
-   // const selectedMeal = MEALS.find(meal => meal.id === mealId);
+export const mealDetailScreenOptions = (navigationData) => {
+   const mealTitle = navigationData.route.params?.mealTitle ?? ''
    return {
-      headerTitle: mealTitle,
-      headerRight: () => (
-         <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item title='Favorite' iconName={isFavorite ? 'ios-star' : 'ios-star-outline'} onPress={toggleFavorite} />
-         </HeaderButtons>
-      )
+      headerTitle: mealTitle      
    };
 };
 

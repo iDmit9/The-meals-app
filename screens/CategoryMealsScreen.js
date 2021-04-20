@@ -8,7 +8,7 @@ import DefaultText from '../components/DefaultText';
 
 const CategoryMealScreen = props => {
 
-    const catId = props.navigation.getParam('categoryId');
+    const catId = props.route.params.categoryId;
 
     const availableMeals = useSelector(state => state.meals.filteredMeals);
 
@@ -29,8 +29,8 @@ const CategoryMealScreen = props => {
     );
 };
 
-CategoryMealScreen.navigationOptions = (navigationData) => {
-    const catId = navigationData.navigation.getParam('categoryId')
+export const categoryMealScreenOptions = (navigationData) => {
+    const catId = navigationData.route.params?.categoryId
     const selectedCategory = CATEGORIES.find(cat => cat.id === catId)
     return {
         headerTitle: selectedCategory.title

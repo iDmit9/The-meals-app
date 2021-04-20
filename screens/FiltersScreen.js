@@ -13,7 +13,7 @@ const FilterSwitch = props => {
       <View style={styles.filterContainer}>
          <Text>{props.label}</Text>
          <Switch
-            trackColor={{ true: Colors.primaryColor }}
+            trackColor={{ false: '#767577', true: Colors.primaryColor }}
             thumbColor={Platform.OS === 'android' ? Colors.primaryColor : ''}
             value={props.state}
             onValueChange={props.onChange}
@@ -44,7 +44,17 @@ const FiltersScreen = props => {
    }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch]);
 
    useEffect(() => {
-      navigation.setParams({ save: saveFilters })
+      navigation.setOptions({         
+         headerRight: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+               <Item
+                  title='Save'
+                  iconName='ios-save'
+                  onPress={saveFilters}
+               />
+            </HeaderButtons>
+         )
+      })
    }, [saveFilters]);
 
    return (
@@ -74,7 +84,7 @@ const FiltersScreen = props => {
    );
 };
 
-FiltersScreen.navigationOptions = (navData) => {
+export const filtersScreenOptions = (navData) => {
    return {
       headerTitle: 'Filter Meals',
       headerLeft: () => (
@@ -86,15 +96,6 @@ FiltersScreen.navigationOptions = (navData) => {
             />
          </HeaderButtons>
       ),
-      headerRight: () => (
-         <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item
-               title='Save'
-               iconName='ios-save'
-               onPress={navData.navigation.getParam('save')}
-            />
-         </HeaderButtons>
-      )
    }
 }
 

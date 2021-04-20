@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector } from 'react-redux';
 
@@ -21,7 +21,7 @@ const FavoritesScreen = props => {
    return <MealList listData={favMeals} navigation={props.navigation} />
 };
 
-FavoritesScreen.navigationOptions = (navData) => {
+export const favoritesScreenOptions = (navData) => {
    return {
       headerTitle: 'Your Favorites',
       headerLeft: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
